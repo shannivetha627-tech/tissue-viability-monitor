@@ -1,0 +1,156 @@
+/* Tissue perfusion visualization + small additions on top of the original style.css */
+
+.tissue-visual-wrap {
+  position: relative;
+  width: 100%;
+  height: 182px;
+  overflow: hidden;
+  border-radius: 16px;
+  border: 1px solid rgba(12, 43, 59, 0.18);
+  background: #2a1416;
+}
+
+.tissue-canvas {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.tissue-state-label {
+  position: absolute;
+  top: 12px;
+  left: 12px;
+  padding: 5px 10px;
+  border-radius: 999px;
+  font:
+    700 10px/1 Arial,
+    sans-serif;
+  letter-spacing: 0.14em;
+  color: #06222c;
+  background: rgba(255, 255, 255, 0.9);
+}
+
+.tissue-viable .tissue-state-label {
+  background: #d6f7e6;
+}
+.tissue-reduced .tissue-state-label {
+  background: #ffeccb;
+}
+.tissue-non-viable .tissue-state-label {
+  background: #ffd9d6;
+}
+
+.tissue-visual-note {
+  position: absolute;
+  right: 12px;
+  bottom: 10px;
+  font:
+    10px/1.3 Arial,
+    sans-serif;
+  letter-spacing: 0.04em;
+  color: rgba(255, 255, 255, 0.82);
+  text-align: right;
+  max-width: 60%;
+}
+
+.signal-panel .tissue-visual-wrap {
+  height: 100%;
+  border: 0;
+  border-radius: 0;
+}
+
+.prototype-disclaimer {
+  max-width: 1240px;
+  margin: 0 auto 34px;
+  padding: 16px 20px;
+  border-left: 3px solid var(--cyan);
+  background: #fff;
+  color: var(--muted);
+  font:
+    12px/1.7 Arial,
+    sans-serif;
+}
+
+.workspace .prototype-disclaimer,
+.login-wrap .prototype-disclaimer {
+  margin: 22px 0 0;
+}
+
+.validation-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  gap: 14px;
+}
+
+.validation-grid div {
+  padding: 14px;
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  background: #fbfdfd;
+}
+
+.validation-grid span {
+  display: block;
+  font:
+    700 10px/1.3 Arial,
+    sans-serif;
+  letter-spacing: 0.13em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+.validation-grid strong {
+  font-size: 20px;
+}
+
+.importance-list {
+  display: grid;
+  gap: 10px;
+}
+
+.importance-row {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 6px;
+  font:
+    12px Arial,
+    sans-serif;
+}
+
+.importance-row i {
+  grid-column: 1 / -1;
+  height: 5px;
+  border-radius: 5px;
+  background: linear-gradient(
+    90deg,
+    var(--blue) var(--level, 10%),
+    #dce6eb var(--level, 10%)
+  );
+}
+
+.login-hint {
+  margin-top: 14px;
+  font:
+    12px/1.7 Arial,
+    sans-serif;
+  color: var(--muted);
+}
+
+@media (max-width: 1024px) {
+  .tissue-visual-wrap {
+    height: 160px;
+  }
+}
+
+@media (max-width: 720px) {
+  .tissue-visual-wrap {
+    height: 140px;
+  }
+}
+
+@media (max-width: 420px) {
+  .tissue-visual-wrap {
+    height: 120px;
+  }
+}
