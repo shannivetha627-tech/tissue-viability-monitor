@@ -71,12 +71,13 @@ function buildVector(input: ModelInput): Float64Array {
 
   let offset = 0;
   m.categoricalCols.forEach((col, i) => {
-    const levels = m.categories[i];
+    const levels = m.categories[i]!;
     const idx = levels.indexOf(String(input[col]));
     // handle_unknown="ignore" -> unknown categories stay all-zero
     if (idx >= 0) x[offset + idx] = 1;
     offset += levels.length;
   });
+
 
   m.numericCols.forEach((col, i) => {
     x[oneHotLength + i] = Number(input[col]);
@@ -99,12 +100,13 @@ export function predictViability(input: ModelInput): PredictionResult {
 
   let total = 0;
   for (let t = 0; t < m.nTrees; t++) {
-    let node = OFFSETS[t];
-    while (FEATURE[node] !== -1) {
-      node = x[FEATURE[node]] <= THRESHOLD[node] ? LEFT[node] : RIGHT[node];
+    let node = OFFSETS[t]!;
+    while (FEATURE[node]! !== -1) {
+      node = x[FEATURE[node]!]! <= THRESHOLD[node]! ? LEFT[node]! : RIGHT[node]!;
     }
-    total += PROB[node];
+    total += PROB[node]!;
   }
+
 
   const pYes = total / m.nTrees;
   const prediction: "Yes" | "No" = pYes >= 0.5 ? "Yes" : "No";
