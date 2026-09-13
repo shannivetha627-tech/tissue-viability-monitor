@@ -246,8 +246,9 @@ function DoctorDashboard() {
             <div>
               <span>Confusion matrix</span>
               <strong style={{ fontSize: 14 }}>
-                [[{VALIDATION.confusionMatrix[0].join(", ")}], [
-                {VALIDATION.confusionMatrix[1].join(", ")}]]
+                [[{VALIDATION.confusionMatrix[0]!.join(", ")}], [
+                {VALIDATION.confusionMatrix[1]!.join(", ")}]]
+
               </strong>
             </div>
           </div>
