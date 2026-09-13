@@ -18,7 +18,7 @@ export function useReveal() {
           const target = entry.target as HTMLElement;
           target.style.setProperty(
             "--reveal-delay",
-            target.dataset.delay || target.style.getPropertyValue("--delay") || "0ms",
+            target.dataset["delay"] || target.style.getPropertyValue("--delay") || "0ms",
           );
           target.classList.add("is-visible");
           obs.unobserve(target);
@@ -34,7 +34,7 @@ export function useReveal() {
     if (timeline) {
       timelineObserver = new IntersectionObserver(
         ([entry]) => {
-          if (entry.isIntersecting) timeline.classList.add("is-active");
+          if (entry?.isIntersecting) timeline.classList.add("is-active");
         },
         { threshold: 0.3 },
       );

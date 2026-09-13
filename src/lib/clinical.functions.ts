@@ -72,8 +72,9 @@ export const login = createServerFn({ method: "POST" })
       await session.update({
         role: "doctor",
         username: username.toLowerCase(),
-        patientId: undefined,
+        patientId: "",
       });
+
       return { ok: true as const, role: "doctor" as const };
     }
 

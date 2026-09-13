@@ -28,7 +28,7 @@ for (const [col, b64] of Object.entries(raw.cat)) CAT[col] = decodeBytes(b64);
 const NUM: Record<string, { values: Uint8Array | Uint16Array; scale: number }> = {};
 for (const [col, b64] of Object.entries(raw.num)) {
   const bytes = decodeBytes(b64);
-  const { scale, dtype } = raw.scales[col];
+  const { scale, dtype } = raw.scales[col]!;
   NUM[col] = {
     values:
       dtype === "uint8"
@@ -62,13 +62,14 @@ export type PatientRecord = {
 export const PATIENT_COUNT = raw.count;
 
 function cat(col: string, i: number): string {
-  return raw.categories[col][CAT[col][i]];
+  return raw.categories[col]![CAT[col]![i]!]!;
 }
 
 function num(col: string, i: number): number {
-  const { values, scale } = NUM[col];
-  return Math.round((values[i] / scale) * 1000) / 1000;
+  const { values, scale } = NUM[col]!;
+  return Math.round((values[i]! / scale) * 1000) / 1000;
 }
+
 
 export function formatPatientId(index: number): string {
   return "P" + String(index + 1).padStart(6, "0");
@@ -112,10 +113,10 @@ export function getPatientById(id: string): PatientRecord | null {
 
 /** Registry-level counts, computed straight from the dataset columns. */
 export function registrySummary() {
-  const viability = CAT["Tissue_Viability"];
-  const risk = CAT["Risk_Level"];
-  const viableLevel = raw.categories["Tissue_Viability"].indexOf("Yes");
-  const highLevel = raw.categories["Risk_Level"].indexOf("High");
+  const viability = CAT["Tissue_Viability"]!;
+  const risk = CAT["Risk_Level"]!;
+  const viableLevel = raw.categories["Tissue_Viability"]!.indexOf("Yes");
+  const highLevel = raw.categories["Risk_Level"]!.indexOf("High");
 
   let stable = 0;
   let highRisk = 0;
@@ -123,6 +124,7 @@ export function registrySummary() {
     if (viability[i] === viableLevel) stable++;
     if (risk[i] === highLevel) highRisk++;
   }
+
 
   return {
     totalPatients: raw.count,

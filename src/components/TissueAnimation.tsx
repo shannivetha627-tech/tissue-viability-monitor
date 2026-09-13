@@ -27,7 +27,7 @@ function lerp(a: number, b: number, t: number) {
 }
 
 function mixRgb(a: number[], b: number[], t: number) {
-  return `rgb(${Math.round(lerp(a[0], b[0], t))}, ${Math.round(lerp(a[1], b[1], t))}, ${Math.round(lerp(a[2], b[2], t))})`;
+  return `rgb(${Math.round(lerp(a[0]!, b[0]!, t))}, ${Math.round(lerp(a[1]!, b[1]!, t))}, ${Math.round(lerp(a[2]!, b[2]!, t))})`;
 }
 
 /**
@@ -47,7 +47,7 @@ export function TissueAnimation({
 }) {
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
   const [label, setLabel] = useState(
-    mode === "fixed" && state ? LABELS[state] : PHASES[0].label,
+    mode === "fixed" && state ? LABELS[state] : PHASES[0]!.label,
   );
   const [activeState, setActiveState] = useState<TissueState>(
     mode === "fixed" && state ? state : "viable",
@@ -70,7 +70,7 @@ export function TissueAnimation({
     let frame = 0;
     let start = performance.now();
     let phaseIndex = 0;
-    let currentLevel = mode === "fixed" && state ? LEVELS[state] : PHASES[0].level;
+    let currentLevel = mode === "fixed" && state ? LEVELS[state] : PHASES[0]!.level;
     let targetLevel = currentLevel;
     let last = start;
 
@@ -99,7 +99,7 @@ export function TissueAnimation({
         let acc = 0;
         let index = 0;
         for (let i = 0; i < PHASES.length; i++) {
-          acc += PHASES[i].hold;
+          acc += PHASES[i]!.hold;
           if (elapsed < acc) {
             index = i;
             break;
@@ -107,10 +107,10 @@ export function TissueAnimation({
         }
         if (index !== phaseIndex) {
           phaseIndex = index;
-          setLabel(PHASES[index].label);
-          setActiveState(PHASES[index].state);
+          setLabel(PHASES[index]!.label);
+          setActiveState(PHASES[index]!.state);
         }
-        targetLevel = PHASES[index].level;
+        targetLevel = PHASES[index]!.level;
       } else {
         targetLevel = LEVELS[state ?? "viable"];
       }
@@ -188,7 +188,7 @@ export function TissueAnimation({
         if (cell.t > 1) cell.t -= 1;
         if (i >= activeCells) return;
 
-        const laneY = lanes[cell.lane];
+        const laneY = lanes[cell.lane]!;
         const amp = h * (0.05 + cell.lane * 0.012);
         const x = cell.t * w;
         const y =
