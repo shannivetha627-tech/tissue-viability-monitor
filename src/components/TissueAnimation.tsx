@@ -40,15 +40,13 @@ export function TissueAnimation({
   caption,
 }: {
   /** "auto" loops viable -> reduced perfusion -> non-viable. */
-  mode?: "auto" | "fixed";
+  mode?: "auto" | "fixed" | undefined;
   /** Used when mode is "fixed" (e.g. driven by a patient's blood flow). */
-  state?: TissueState;
-  caption?: string;
+  state?: TissueState | undefined;
+  caption?: string | undefined;
 }) {
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
-  const [label, setLabel] = useState(
-    mode === "fixed" && state ? LABELS[state] : PHASES[0]!.label,
-  );
+  const [label, setLabel] = useState(mode === "fixed" && state ? LABELS[state] : PHASES[0]!.label);
   const [activeState, setActiveState] = useState<TissueState>(
     mode === "fixed" && state ? state : "viable",
   );
@@ -68,7 +66,7 @@ export function TissueAnimation({
     }));
 
     let frame = 0;
-    let start = performance.now();
+    const start = performance.now();
     let phaseIndex = 0;
     let currentLevel = mode === "fixed" && state ? LEVELS[state] : PHASES[0]!.level;
     let targetLevel = currentLevel;

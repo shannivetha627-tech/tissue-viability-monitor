@@ -36,5 +36,13 @@ export default tseslint.config(
       "@typescript-eslint/no-unused-vars": "off",
     },
   },
+  {
+    // Server-side modules use TanStack Start APIs (e.g. useSession) that follow
+    // React hook naming but are not React hooks. Disable react-hooks rules for them.
+    files: ["**/*.server.ts"],
+    rules: {
+      "react-hooks/rules-of-hooks": "off",
+    },
+  },
   eslintPluginPrettier,
 );

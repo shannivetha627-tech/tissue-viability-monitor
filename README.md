@@ -169,7 +169,6 @@ Flap_Type
 Risk_Level
 Tissue_Viability
 
-
 The dataset contains 10,000 patient records.
 
 CRITICAL ML RULE
@@ -198,7 +197,6 @@ Capillary_Refill_Time
 Surgery_Duration
 Flap_Type
 
-
 Risk_Level can remain in the database/display if required, but it must never be passed into the trained model.
 
 EXISTING ML MODEL
@@ -206,7 +204,6 @@ EXISTING ML MODEL
 Use the existing trained model if it is already present in the repository:
 
 model/tissue_viability_model.pkl
-
 
 Load it using Joblib.
 
@@ -219,12 +216,11 @@ Random Forest Classifier
 Configuration used during training:
 
 RandomForestClassifier(
-    n_estimators=200,
-    class_weight="balanced",
-    random_state=42,
-    n_jobs=-1
+n_estimators=200,
+class_weight="balanced",
+random_state=42,
+n_jobs=-1
 )
-
 
 Categorical features:
 
@@ -235,11 +231,9 @@ Hypertension
 Blood_Flow
 Flap_Type
 
-
 Use:
 
 OneHotEncoder(handle_unknown="ignore")
-
 
 where appropriate.
 
@@ -248,21 +242,20 @@ PREDICTION OUTPUT
 When a doctor searches for a patient, the application should:
 
 Patient ID
-       ↓
+↓
 Retrieve patient
-       ↓
+↓
 Extract 15 ML features
-       ↓
+↓
 Random Forest
-       ↓
+↓
 Prediction
-       ↓
+↓
 Probability
-       ↓
+↓
 Confidence
-       ↓
+↓
 Compare with recorded viability
-
 
 Return:
 
@@ -272,13 +265,11 @@ confidence
 recorded_viability
 comparison
 
-
 Confidence:
 
->= 80% → High
->= 60% → Moderate
-< 60% → Low
-
+> = 80% → High
+> = 60% → Moderate
+> < 60% → Low
 
 Comparison:
 
@@ -287,7 +278,6 @@ AI prediction == recorded Tissue_Viability
 
 otherwise
 → Mismatch
-
 
 HOMEPAGE
 
@@ -402,15 +392,14 @@ Tissue Perfusion Monitor
 The exact layout must be:
 
 ┌───────────────────────────────────┐
-│ Tissue Perfusion Monitor          │
-│                                   │
+│ Tissue Perfusion Monitor │
+│ │
 │ [ ANIMATED TISSUE VISUALIZATION ] │
-│                                   │
-│ Blood Flow   Oxygenation          │
-│                                   │
-│ Perfusion                         │
+│ │
+│ Blood Flow Oxygenation │
+│ │
+│ Perfusion │
 └───────────────────────────────────┘
-
 
 The animation MUST be:
 
@@ -539,22 +528,19 @@ Maintain/fix the existing authentication system.
 Routes:
 
 /
- /login
- /logout
- /doctor
- /patient
-
+/login
+/logout
+/doctor
+/patient
 
 Doctor:
 
 GET /doctor
 POST /doctor
 
-
 Patient:
 
 GET /patient
-
 
 Doctor should have patient-search functionality.
 
@@ -571,12 +557,10 @@ ROC-AUC: 1.0000
 Validation records: 10,000
 Correct predictions: 9,990 / 10,000
 
-
 Confusion matrix:
 
 [[1208, 0],
  [10, 8782]]
-
 
 Display these only as:
 
@@ -589,7 +573,6 @@ FEATURE IMPORTANCE
 If:
 
 model/feature_importance.csv
-
 
 exists, use the actual values.
 
@@ -630,13 +613,11 @@ Tablet: 160px
 Mobile: 140px
 Small mobile: 120px
 
-
 Use:
 
 width: 100%;
 height: 100%;
 object-fit: cover;
-
 
 with rounded corners.
 
@@ -711,29 +692,28 @@ FINAL ACCEPTANCE TEST
 The final application must successfully demonstrate:
 
 Homepage
-   ↓
+↓
 Login
-   ↓
+↓
 Doctor Dashboard
-   ↓
+↓
 Patient Search
-   ↓
+↓
 Real Patient Data
-   ↓
+↓
 Random Forest Prediction
-   ↓
+↓
 Probability
-   ↓
+↓
 Confidence
-   ↓
+↓
 Recorded Viability
-   ↓
+↓
 Match/Mismatch
-   ↓
+↓
 Tissue Perfusion Animation
-   ↓
+↓
 Blood Flow / Oxygenation / Perfusion
-
 
 Test using real patient IDs from the dataset.
 

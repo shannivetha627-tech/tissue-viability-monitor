@@ -70,7 +70,6 @@ function num(col: string, i: number): number {
   return Math.round((values[i]! / scale) * 1000) / 1000;
 }
 
-
 export function formatPatientId(index: number): string {
   return "P" + String(index + 1).padStart(6, "0");
 }
@@ -124,7 +123,6 @@ export function registrySummary() {
     if (viability[i] === viableLevel) stable++;
     if (risk[i] === highLevel) highRisk++;
   }
-
 
   return {
     totalPatients: raw.count,

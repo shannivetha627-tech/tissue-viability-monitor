@@ -113,10 +113,7 @@ function Home() {
           </Link>
         </div>
       </nav>
-      <div
-        className={`landing-backdrop${menuOpen ? " is-visible" : ""}`}
-        onClick={close}
-      ></div>
+      <div className={`landing-backdrop${menuOpen ? " is-visible" : ""}`} onClick={close}></div>
 
       <main id="top">
         <section className="landing-main">
@@ -126,8 +123,8 @@ function Home() {
               Predict tissue viability. <span>Understand risk earlier.</span>
             </h1>
             <p className="lead">
-              AI-assisted postoperative monitoring that brings physiological indicators
-              and machine-learning analysis into one focused clinical workspace.
+              AI-assisted postoperative monitoring that brings physiological indicators and
+              machine-learning analysis into one focused clinical workspace.
             </p>
             <p className="landing-secondary">
               TissueGuard AI brings patient observations, physiological indicators, and
@@ -176,20 +173,21 @@ function Home() {
           <span>Prototype workspace</span>
         </div>
 
-        <section
-          className="landing-section capability-section"
-          aria-labelledby="capability-title"
-        >
+        <section className="landing-section capability-section" aria-labelledby="capability-title">
           <div className="section-intro">
             <p className="eyebrow">A clearer clinical picture</p>
             <h2 id="capability-title">Signals in one focused workspace.</h2>
             <p>
-              Review the indicators that matter to postoperative tissue viability
-              without losing the context around them.
+              Review the indicators that matter to postoperative tissue viability without losing the
+              context around them.
             </p>
           </div>
           <div className="capability-grid">
-            <article className="capability-card" data-reveal style={{ "--delay": "0ms" } as React.CSSProperties}>
+            <article
+              className="capability-card"
+              data-reveal
+              style={{ "--delay": "0ms" } as React.CSSProperties}
+            >
               <span className="capability-label">AI intelligence</span>
               <span className="capability-icon">✦</span>
               <h3>AI-assisted prediction</h3>
@@ -203,7 +201,11 @@ function Home() {
                 <i></i>
               </span>
             </article>
-            <article className="capability-card" data-reveal style={{ "--delay": "100ms" } as React.CSSProperties}>
+            <article
+              className="capability-card"
+              data-reveal
+              style={{ "--delay": "100ms" } as React.CSSProperties}
+            >
               <span className="capability-label">Physiology</span>
               <span className="capability-icon">◌</span>
               <h3>Physiological monitoring</h3>
@@ -213,7 +215,11 @@ function Home() {
               </span>
               <span className="card-visual waveform-visual" aria-hidden="true"></span>
             </article>
-            <article className="capability-card" data-reveal style={{ "--delay": "200ms" } as React.CSSProperties}>
+            <article
+              className="capability-card"
+              data-reveal
+              style={{ "--delay": "200ms" } as React.CSSProperties}
+            >
               <span className="capability-label">Access control</span>
               <span className="capability-icon">⌁</span>
               <h3>Secure clinical access</h3>
@@ -225,7 +231,11 @@ function Home() {
                 ◈
               </span>
             </article>
-            <article className="capability-card" data-reveal style={{ "--delay": "300ms" } as React.CSSProperties}>
+            <article
+              className="capability-card"
+              data-reveal
+              style={{ "--delay": "300ms" } as React.CSSProperties}
+            >
               <span className="capability-label">Clinical continuity</span>
               <span className="capability-icon">↗</span>
               <h3>Prediction history</h3>
@@ -271,9 +281,7 @@ function Home() {
             <article data-reveal>
               <b>04</b>
               <h3>Clinical review</h3>
-              <p>
-                Present the result and supporting indicators for professional review.
-              </p>
+              <p>Present the result and supporting indicators for professional review.</p>
             </article>
           </div>
         </section>
@@ -291,7 +299,11 @@ function Home() {
           <div className="monitoring-grid">
             {[
               ["♡", "Heart rate", "Cardiac rate indicator used in postoperative assessment."],
-              ["⌁", "Blood pressure", "Systolic pressure indicator recorded with the patient profile."],
+              [
+                "⌁",
+                "Blood pressure",
+                "Systolic pressure indicator recorded with the patient profile.",
+              ],
               ["O₂", "SpO₂", "Oxygen saturation indicator used as part of assessment."],
               ["°", "Tissue temperature", "Local temperature indicator for tissue monitoring."],
               ["≈", "Blood flow", "Flow indicator supporting the tissue viability review."],
@@ -318,9 +330,9 @@ function Home() {
             <p className="eyebrow">System preview</p>
             <h2 id="preview-title">A shared language for tissue viability.</h2>
             <p>
-              This interface illustration shows how indicators and an AI-assisted result
-              can sit together for professional review. Values shown are illustrative
-              only, not live patient data.
+              This interface illustration shows how indicators and an AI-assisted result can sit
+              together for professional review. Values shown are illustrative only, not live patient
+              data.
             </p>
             <Link className="text-link" to="/login">
               Enter the clinical workspace <span aria-hidden="true">↗</span>
@@ -377,8 +389,8 @@ function Home() {
               <span className="workspace-kicker">01 / Doctor workspace</span>
               <h3>Review with context.</h3>
               <p>
-                Review patient parameters, run AI-assisted viability predictions, and
-                monitor prediction history.
+                Review patient parameters, run AI-assisted viability predictions, and monitor
+                prediction history.
               </p>
               <Link className="text-link" to="/login">
                 Doctor login <span aria-hidden="true">↗</span>
@@ -388,8 +400,8 @@ function Home() {
               <span className="workspace-kicker">02 / Patient workspace</span>
               <h3>Stay close to your record.</h3>
               <p>
-                Securely view your own clinical information and prediction history.
-                Patients cannot access other patients' information.
+                Securely view your own clinical information and prediction history. Patients cannot
+                access other patients' information.
               </p>
               <Link className="text-link" to="/login">
                 Patient login <span aria-hidden="true">↗</span>
@@ -402,10 +414,7 @@ function Home() {
           <div className="security-intro">
             <p className="eyebrow">Access by design</p>
             <h2 id="security-title">Built around secure clinical access.</h2>
-            <p>
-              Clear boundaries keep each workspace focused on the people it is intended
-              for.
-            </p>
+            <p>Clear boundaries keep each workspace focused on the people it is intended for.</p>
           </div>
           <div className="security-grid">
             <article>
@@ -435,8 +444,8 @@ function Home() {
           <p className="eyebrow">TissueGuard AI</p>
           <h2>Turn postoperative data into clearer clinical insight.</h2>
           <p>
-            TissueGuard AI provides an AI-assisted workspace for monitoring tissue
-            viability and reviewing postoperative indicators.
+            TissueGuard AI provides an AI-assisted workspace for monitoring tissue viability and
+            reviewing postoperative indicators.
           </p>
           <div className="landing-actions">
             <Link className="primary-action" to="/login">
@@ -462,9 +471,7 @@ function Home() {
           <Link to="/login">Doctor login</Link>
           <Link to="/login">Patient login</Link>
         </div>
-        <small>
-          Confidential clinical workspace • Prototype AI decision-support system
-        </small>
+        <small>Confidential clinical workspace • Prototype AI decision-support system</small>
       </footer>
     </>
   );

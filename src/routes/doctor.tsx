@@ -3,12 +3,19 @@ import { useServerFn } from "@tanstack/react-start";
 import { useEffect, useState } from "react";
 
 import { Disclaimer } from "@/components/Disclaimer";
-import { PatientProfile, ResultAndMonitor } from "@/components/PatientPanels";
+import {
+  PatientProfile,
+  ResultAndMonitor,
+  PredictionHistoryPanel,
+} from "@/components/PatientPanels";
+import { TissueAnimation, bloodFlowToState } from "@/components/TissueAnimation";
 import {
   getCurrentSession,
   getRegistrySummary,
   searchPatient,
+  getPredictionHistory,
   type ViabilityAssessment,
+  type PredictionHistoryRecord,
 } from "@/lib/clinical.functions";
 import type { PatientRecord } from "@/lib/patients.server";
 import { FEATURE_IMPORTANCE, VALIDATION } from "@/lib/validation";
@@ -41,7 +48,7 @@ function DoctorDashboard() {
   const summaryFn = useServerFn(getRegistrySummary);
   const search = useServerFn(searchPatient);
 
-  const [username, setUsername] = useState("doctor");
+  const [username, setUsername] = useState("");
   const [summary, setSummary] = useState<{
     totalPatients: number;
     stable: number;
@@ -55,6 +62,8 @@ function DoctorDashboard() {
   const [error, setError] = useState<string | null>(null);
   const [patient, setPatient] = useState<PatientRecord | null>(null);
   const [assessment, setAssessment] = useState<ViabilityAssessment | null>(null);
+  const [history, setHistory] = useState<PredictionHistoryRecord[]>([]);
+  const fetchHistory = useServerFn(getPredictionHistory);
 
   useEffect(() => {
     document.body.classList.add("app-shell");
@@ -68,7 +77,7 @@ function DoctorDashboard() {
         await router.navigate({ to: "/login" });
         return;
       }
-      setUsername(s.username ?? "doctor");
+      setUsername(s.username ?? "");
       setSummary(await summaryFn({}));
     })();
   }, [session, summaryFn, router]);
@@ -83,11 +92,17 @@ function DoctorDashboard() {
       if (!result.ok) {
         setPatient(null);
         setAssessment(null);
+        setHistory([]);
         setError(result.error);
         return;
       }
       setPatient(result.patient);
       setAssessment(result.assessment);
+
+      const histResult = await fetchHistory({ data: { patientId } });
+      if (histResult.ok) {
+        setHistory(histResult.history);
+      }
     } finally {
       setBusy(false);
     }
@@ -154,8 +169,8 @@ function DoctorDashboard() {
             <p className="subtitle">AI-assisted postoperative tissue assessment</p>
           </div>
           <div className="doctor-chip">
-            <span className="avatar">{username.slice(0, 1).toUpperCase()}</span>
-            <span>Dr. {username}</span>
+            <span className="avatar">{(username || "D").slice(0, 1).toUpperCase()}</span>
+            <span>Dr. {username || "Doctor"}</span>
           </div>
         </header>
 
@@ -183,28 +198,39 @@ function DoctorDashboard() {
         </section>
 
         <section className="panel search-panel" id="patient">
-          <div>
+          <div style={{ flex: 1, minWidth: "260px" }}>
             <p className="eyebrow">Patient lookup</p>
             <h2>Find a patient record</h2>
             <p className="muted">Search authorized clinical records by patient ID.</p>
+            <form className="search-form" onSubmit={onSearch} style={{ marginTop: "16px" }}>
+              <label className="sr-only" htmlFor="patient-id">
+                Patient ID
+              </label>
+              <input
+                id="patient-id"
+                name="patient_id"
+                value={patientId}
+                onChange={(e) => setPatientId(e.target.value)}
+                placeholder="Enter Patient ID"
+                autoComplete="off"
+                required
+              />
+              <button type="submit" disabled={busy}>
+                {busy ? "Searching…" : "Search"}
+              </button>
+            </form>
           </div>
-          <form className="search-form" onSubmit={onSearch}>
-            <label className="sr-only" htmlFor="patient-id">
-              Patient ID
-            </label>
-            <input
-              id="patient-id"
-              name="patient_id"
-              value={patientId}
-              onChange={(e) => setPatientId(e.target.value)}
-              placeholder="P000047"
-              autoComplete="off"
-              required
+          <div style={{ width: "260px", flexShrink: 0 }} className="search-animation-wrap">
+            <TissueAnimation
+              mode={patient ? "fixed" : "auto"}
+              state={patient ? bloodFlowToState(patient.Blood_Flow) : undefined}
+              caption={
+                patient
+                  ? `Patient ${patient.Patient_ID} Perfusion`
+                  : "Live tissue perfusion preview"
+              }
             />
-            <button type="submit" disabled={busy}>
-              {busy ? "Searching…" : "Search"}
-            </button>
-          </form>
+          </div>
         </section>
 
         {searched && error && (
@@ -215,7 +241,10 @@ function DoctorDashboard() {
 
         {patient && <PatientProfile patient={patient} />}
         {patient && assessment && (
-          <ResultAndMonitor patient={patient} assessment={assessment} />
+          <>
+            <ResultAndMonitor patient={patient} assessment={assessment} />
+            <PredictionHistoryPanel history={history} />
+          </>
         )}
 
         <section className="panel" id="model">
@@ -248,13 +277,12 @@ function DoctorDashboard() {
               <strong style={{ fontSize: 14 }}>
                 [[{VALIDATION.confusionMatrix[0]!.join(", ")}], [
                 {VALIDATION.confusionMatrix[1]!.join(", ")}]]
-
               </strong>
             </div>
           </div>
           <p className="muted" style={{ marginTop: 14 }}>
-            Feature importance (from model/feature_importance.csv). Risk_Level is
-            excluded from the model as a target-leakage feature.
+            Feature importance (from model/feature_importance.csv). Risk_Level is excluded from the
+            model as a target-leakage feature.
           </p>
           <div className="importance-list">
             {FEATURE_IMPORTANCE.map((f) => (
@@ -262,9 +290,7 @@ function DoctorDashboard() {
                 <span>{f.name}</span>
                 <b>{(f.value * 100).toFixed(2)}%</b>
                 <i
-                  style={
-                    { "--level": `${Math.min(f.value * 350, 100)}%` } as React.CSSProperties
-                  }
+                  style={{ "--level": `${Math.min(f.value * 350, 100)}%` } as React.CSSProperties}
                 ></i>
               </div>
             ))}

@@ -1,8 +1,10 @@
 import { createFileRoute, Link, useRouter } from "@tanstack/react-router";
 import { useServerFn } from "@tanstack/react-start";
 import { useEffect, useState } from "react";
+import { Eye, EyeOff } from "lucide-react";
 
 import { Disclaimer } from "@/components/Disclaimer";
+import { TissueAnimation } from "@/components/TissueAnimation";
 import { login } from "@/lib/clinical.functions";
 
 export const Route = createFileRoute("/login")({
@@ -28,10 +30,12 @@ export const Route = createFileRoute("/login")({
 
 function LoginPage() {
   const router = useRouter();
+  const { queryClient } = Route.useRouteContext();
   const doLogin = useServerFn(login);
   const [loginType, setLoginType] = useState("");
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [busy, setBusy] = useState(false);
 
@@ -56,7 +60,13 @@ function LoginPage() {
         setError(result.error);
         return;
       }
-      await router.navigate({ to: result.role === "doctor" ? "/doctor" : "/patient" });
+      await queryClient.invalidateQueries({ queryKey: ["session"] });
+      await router.invalidate();
+      if (result.role === "pending_doctor") {
+        await router.navigate({ to: "/verify-face" });
+      } else {
+        await router.navigate({ to: "/patient" });
+      }
     } catch {
       setError("Sign-in failed. Please try again.");
     } finally {
@@ -71,6 +81,9 @@ function LoginPage() {
         <h1>Welcome back.</h1>
         <p>Choose the workspace associated with your account.</p>
       </header>
+      <div style={{ marginBottom: "20px" }}>
+        <TissueAnimation mode="auto" caption="Live tissue viability monitoring signal" />
+      </div>
       {error && (
         <div className="login-error" role="alert">
           {error}
@@ -79,7 +92,7 @@ function LoginPage() {
       <section className="login-card">
         <h2>Sign in</h2>
         <form onSubmit={onSubmit}>
-          <label htmlFor="login-type">Access type</label>
+          <label htmlFor="login-type">ACCESS TYPE</label>
           <select
             id="login-type"
             name="login_type"
@@ -91,35 +104,52 @@ function LoginPage() {
             <option value="doctor">Doctor</option>
             <option value="patient">Patient</option>
           </select>
-          <label htmlFor="username">Username</label>
+          <label htmlFor="username">USERNAME</label>
           <input
             id="username"
             name="username"
             type="text"
             autoComplete="username"
+            placeholder="Enter username"
             required
             value={username}
             onChange={(e) => setUsername(e.target.value)}
           />
-          <label htmlFor="password">Password</label>
-          <input
-            id="password"
-            name="password"
-            type="password"
-            autoComplete="current-password"
-            required
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-          />
+          <label htmlFor="password">PASSWORD</label>
+          <div className="password-wrap relative w-full">
+            <input
+              id="password"
+              name="password"
+              type={showPassword ? "text" : "password"}
+              autoComplete="current-password"
+              placeholder="Enter password"
+              required
+              className="pr-12"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+            />
+            <button
+              type="button"
+              className="password-toggle absolute right-3 top-1/2 -translate-y-1/2 p-1.5 text-slate-600 hover:text-slate-900 hover:bg-slate-100 rounded-md transition-colors"
+              aria-label={showPassword ? "Hide password" : "Show password"}
+              onClick={() => setShowPassword((v) => !v)}
+            >
+              {showPassword ? <EyeOff className="w-5 h-5" /> : <Eye className="w-5 h-5" />}
+            </button>
+          </div>
           <button type="submit" disabled={busy}>
             {busy ? "Signing in…" : "Continue securely"}
           </button>
         </form>
-        <p className="login-hint">
-          Doctor account: <strong>doc1 / password123</strong>. Patient accounts use the
-          patient ID as the username (for example <strong>P000047</strong>) with the
-          password <strong>Patient@000047</strong>.
-        </p>
+        <div className="login-hint">
+          <p>
+            <strong>Development Access:</strong> Development demo access is configured for this
+            environment. Enter your authorized credentials to continue.
+          </p>
+          <p style={{ marginTop: "4px" }}>
+            Patient accounts use the assigned Patient ID as the username.
+          </p>
+        </div>
         <Link className="back" to="/">
           Back to TissueGuard AI
         </Link>

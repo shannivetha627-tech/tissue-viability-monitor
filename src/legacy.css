@@ -1,18 +1,21 @@
 :root {
   --navy: #091b2a;
-  --ink: #152536;
-  --muted: #6b7d8d;
-  --line: #dce6eb;
+  --ink: #0f172a;
+  --body: #1e293b;
+  --secondary: #334155;
+  --muted: #475569;
+  --placeholder: #64748b;
+  --line: #94a3b8;
   --paper: #f4f8f9;
   --white: #fff;
-  --blue: #197d9d;
-  --cyan: #5bd2d3;
-  --green: #197b62;
-  --green-bg: #e8f6ef;
-  --amber: #a36516;
-  --amber-bg: #fff4dd;
-  --red: #a13d42;
-  --red-bg: #fff0ef;
+  --blue: #087e9f;
+  --cyan: #0284c7;
+  --green: #15803d;
+  --green-bg: #dcfce7;
+  --amber: #b45309;
+  --amber-bg: #fef3c7;
+  --red: #b91c1c;
+  --red-bg: #fee2e2;
   --shadow: 0 18px 48px rgba(12, 42, 58, 0.08);
 }
 * {
@@ -155,11 +158,13 @@ h1 {
   font-size: 38px;
   font-weight: 500;
   letter-spacing: 0;
+  color: var(--ink);
 }
 h2 {
   margin-bottom: 8px;
   font-size: 23px;
   font-weight: 500;
+  color: var(--ink);
 }
 .subtitle,
 .muted {
@@ -243,14 +248,18 @@ select {
   min-width: 0;
   width: 100%;
   padding: 13px 14px;
-  border: 1px solid #bfd0d7;
+  border: 1.5px solid #94a3b8;
   border-radius: 8px;
   color: var(--ink);
   font: 14px Arial;
-  background: #fbfdfd;
+  background: #fff;
 }
-input:focus {
-  outline: 3px solid rgba(91, 210, 211, 0.25);
+input::placeholder {
+  color: #64748b;
+}
+input:focus,
+select:focus {
+  outline: 3px solid rgba(8, 126, 159, 0.2);
   border-color: var(--blue);
 }
 button,
@@ -307,17 +316,21 @@ button,
 .data-item {
   padding: 13px;
   border-radius: 9px;
-  background: #f6fafb;
+  background: #f0f6f8;
+  border: 1px solid #d1dde2;
 }
 .data-item span {
   display: block;
   margin-bottom: 8px;
-  color: var(--muted);
-  font-size: 9px;
-  letter-spacing: 0.08em;
+  color: #475569;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.09em;
+  text-transform: uppercase;
 }
 .data-item strong {
   font: 600 14px Arial;
+  color: var(--ink);
   word-break: break-word;
 }
 .results-grid,
@@ -381,12 +394,16 @@ button,
 .result-details span {
   display: block;
   color: var(--muted);
-  font-size: 9px;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
 }
 .result-details strong {
   display: block;
   margin-top: 7px;
-  font: 600 13px Arial;
+  font: 700 14px Arial;
+  color: var(--ink);
 }
 .text-good {
   color: var(--green);
@@ -396,8 +413,8 @@ button,
 }
 .disclaimer {
   margin: 25px 0 0;
-  color: var(--muted);
-  font: 11px/1.5 Arial;
+  color: var(--secondary);
+  font: 12px/1.6 Arial;
 }
 .tissue-panel {
   background: #102b3a;
@@ -501,11 +518,7 @@ button,
   grid-column: 1/-1;
   height: 4px;
   border-radius: 5px;
-  background: linear-gradient(
-    90deg,
-    var(--cyan) var(--level, 70%),
-    #315461 var(--level, 70%)
-  );
+  background: linear-gradient(90deg, var(--cyan) var(--level, 70%), #315461 var(--level, 70%));
 }
 .history-list {
   display: grid;
@@ -625,8 +638,8 @@ button,
 }
 footer {
   padding: 20px 0;
-  color: #8297a2;
-  font: 11px Arial;
+  color: #475569;
+  font: 12px Arial;
 }
 .patient-shell {
   min-height: 100vh;
@@ -820,12 +833,7 @@ footer {
   background:
     linear-gradient(rgba(243, 248, 249, 0.78) 1px, transparent 1px),
     linear-gradient(90deg, rgba(243, 248, 249, 0.78) 1px, transparent 1px),
-    radial-gradient(
-      circle at 15% 12%,
-      rgba(91, 213, 210, 0.22),
-      transparent 28rem
-    ),
-    #eef6f7;
+    radial-gradient(circle at 15% 12%, rgba(91, 213, 210, 0.22), transparent 28rem), #eef6f7;
   background-size:
     42px 42px,
     42px 42px,
@@ -874,8 +882,7 @@ footer {
 
 .landing {
   min-height: 100vh;
-  background:
-    radial-gradient(circle at 75% 15%, #d8f1ee 0, transparent 34%), var(--paper);
+  background: radial-gradient(circle at 75% 15%, #d8f1ee 0, transparent 34%), var(--paper);
 }
 .landing-nav {
   display: flex;
@@ -992,8 +999,7 @@ footer {
   display: grid;
   place-items: center;
   padding: 30px;
-  background:
-    radial-gradient(circle at 10% 10%, #d8f1ee 0, transparent 32%), #edf5f5;
+  background: radial-gradient(circle at 10% 10%, #d8f1ee 0, transparent 32%), #edf5f5;
 }
 .login-wrap {
   width: min(100%, 470px);
@@ -1005,9 +1011,10 @@ footer {
   margin: 10px 0;
   font-size: 42px;
   font-weight: 500;
+  color: var(--ink);
 }
 .login-wrap header p {
-  color: var(--muted);
+  color: var(--secondary);
   font:
     14px/1.6 Arial,
     sans-serif;
@@ -1021,18 +1028,19 @@ footer {
 }
 .login-card h2 {
   margin-bottom: 20px;
+  color: var(--ink);
 }
 .login-card label {
   display: block;
   margin: 16px 0 7px;
-  color: var(--muted);
+  color: var(--ink);
   font:
-    700 10px Arial,
+    700 11px Arial,
     sans-serif;
-  letter-spacing: 0.1em;
+  letter-spacing: 0.12em;
   text-transform: uppercase;
 }
-.login-card button {
+.login-card button[type="submit"] {
   width: 100%;
   margin-top: 20px;
 }
@@ -1042,17 +1050,37 @@ footer {
   text-align: center;
   color: var(--blue);
   font:
-    13px Arial,
+    600 13px Arial,
     sans-serif;
   text-decoration: none;
+}
+.login-hint {
+  margin-top: 20px;
+  padding: 16px 18px;
+  border-radius: 8px;
+  background: #f8fafc;
+  border: 1px solid #cbd5e1;
+  color: #334155;
+  font:
+    500 14px/1.6 Arial,
+    sans-serif;
+}
+.login-hint p {
+  margin: 0;
+  color: #334155;
+}
+.login-hint strong {
+  color: #0f172a;
+  font-weight: 700;
 }
 .login-error {
   padding: 12px;
   border-radius: 8px;
   color: var(--red);
   background: var(--red-bg);
+  border: 1px solid #fca5a5;
   font:
-    13px Arial,
+    600 13px Arial,
     sans-serif;
 }
 @media (max-width: 760px) {
@@ -1087,11 +1115,7 @@ footer {
   height: 780px;
   content: "";
   pointer-events: none;
-  background: radial-gradient(
-    circle at 70% 10%,
-    rgba(91, 210, 211, 0.24),
-    transparent 62%
-  );
+  background: radial-gradient(circle at 70% 10%, rgba(91, 210, 211, 0.24), transparent 62%);
 }
 .landing > * {
   position: relative;
@@ -2036,26 +2060,55 @@ footer {
 
 /* Premium clinical product layer */
 :root {
-  --ink: #102434;
-  --muted: #617687;
+  --ink: #0f172a;
+  --body: #1e293b;
+  --secondary: #334155;
+  --muted: #475569;
+  --placeholder: #64748b;
   --paper: #f3f8f9;
-  --line: rgba(108, 154, 169, 0.23);
+  --line: #94a3b8;
   --blue: #087e9f;
-  --cyan: #5bd5d2;
+  --cyan: #0284c7;
   --deep: #071d2c;
   --sans: "Aptos", "Segoe UI", sans-serif;
   --display: Georgia, "Times New Roman", serif;
 }
 
+.password-wrap {
+  position: relative;
+  display: flex;
+  align-items: center;
+  width: 100%;
+}
+.password-wrap input {
+  padding-right: 42px;
+}
+.password-toggle {
+  position: absolute;
+  right: 8px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  padding: 0;
+  border: 0;
+  border-radius: 6px;
+  background: transparent;
+  color: #475569;
+  cursor: pointer;
+  transition: color 150ms ease, background-color 150ms ease;
+}
+.password-toggle:hover,
+.password-toggle:focus-visible {
+  color: #0f172a;
+  background: #e2e8f0;
+}
+
 body {
   font-family: var(--sans);
   background:
-    radial-gradient(
-      circle at 80% 0%,
-      rgba(91, 213, 210, 0.14),
-      transparent 34rem
-    ),
-    var(--paper);
+    radial-gradient(circle at 80% 0%, rgba(91, 213, 210, 0.14), transparent 34rem), var(--paper);
 }
 h1,
 h2,
@@ -2078,12 +2131,7 @@ select {
   background:
     linear-gradient(rgba(243, 248, 249, 0.72) 1px, transparent 1px),
     linear-gradient(90deg, rgba(243, 248, 249, 0.72) 1px, transparent 1px),
-    radial-gradient(
-      circle at 78% 4%,
-      rgba(91, 213, 210, 0.2),
-      transparent 34rem
-    ),
-    #f4f9fa;
+    radial-gradient(circle at 78% 4%, rgba(91, 213, 210, 0.2), transparent 34rem), #f4f9fa;
   background-size:
     42px 42px,
     42px 42px,
@@ -2159,11 +2207,7 @@ select {
   overflow: hidden;
   border: 1px solid rgba(112, 163, 174, 0.28);
   border-radius: 18px;
-  background: linear-gradient(
-    145deg,
-    rgba(255, 255, 255, 0.88),
-    rgba(233, 244, 245, 0.58)
-  );
+  background: linear-gradient(145deg, rgba(255, 255, 255, 0.88), rgba(233, 244, 245, 0.58));
   box-shadow: 0 16px 38px rgba(10, 49, 65, 0.06);
   transition:
     transform 360ms cubic-bezier(0.2, 0.8, 0.2, 1),
@@ -2362,12 +2406,7 @@ select {
 .app-shell,
 .patient-shell {
   background:
-    radial-gradient(
-      circle at 90% 0%,
-      rgba(91, 213, 210, 0.12),
-      transparent 28rem
-    ),
-    #f3f8f9;
+    radial-gradient(circle at 90% 0%, rgba(91, 213, 210, 0.12), transparent 28rem), #f3f8f9;
 }
 .sidebar {
   background: linear-gradient(165deg, #071d2c, #0b2e3d 72%, #0d3e49);

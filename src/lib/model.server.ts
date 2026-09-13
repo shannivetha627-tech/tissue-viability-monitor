@@ -78,7 +78,6 @@ function buildVector(input: ModelInput): Float64Array {
     offset += levels.length;
   });
 
-
   m.numericCols.forEach((col, i) => {
     x[oneHotLength + i] = Number(input[col]);
   });
@@ -107,17 +106,12 @@ export function predictViability(input: ModelInput): PredictionResult {
     total += PROB[node]!;
   }
 
-
   const pYes = total / m.nTrees;
   const prediction: "Yes" | "No" = pYes >= 0.5 ? "Yes" : "No";
   const predictedClassProbability = (prediction === "Yes" ? pYes : 1 - pYes) * 100;
 
   const confidence =
-    predictedClassProbability >= 80
-      ? "High"
-      : predictedClassProbability >= 60
-        ? "Moderate"
-        : "Low";
+    predictedClassProbability >= 80 ? "High" : predictedClassProbability >= 60 ? "Moderate" : "Low";
 
   return {
     prediction,

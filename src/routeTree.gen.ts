@@ -14,6 +14,7 @@ import { Route as DoctorRouteImport } from './routes/doctor'
 import { Route as LoginRouteImport } from './routes/login'
 import { Route as LogoutRouteImport } from './routes/logout'
 import { Route as PatientRouteImport } from './routes/patient'
+import { Route as VerifyFaceRouteImport } from './routes/verify-face'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
@@ -40,6 +41,11 @@ const PatientRoute = PatientRouteImport.update({
   path: '/patient',
   getParentRoute: () => rootRouteImport,
 } as any)
+const VerifyFaceRoute = VerifyFaceRouteImport.update({
+  id: '/verify-face',
+  path: '/verify-face',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
@@ -47,6 +53,7 @@ export interface FileRoutesByFullPath {
   '/login': typeof LoginRoute
   '/logout': typeof LogoutRoute
   '/patient': typeof PatientRoute
+  '/verify-face': typeof VerifyFaceRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -54,6 +61,7 @@ export interface FileRoutesByTo {
   '/login': typeof LoginRoute
   '/logout': typeof LogoutRoute
   '/patient': typeof PatientRoute
+  '/verify-face': typeof VerifyFaceRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -62,13 +70,22 @@ export interface FileRoutesById {
   '/login': typeof LoginRoute
   '/logout': typeof LogoutRoute
   '/patient': typeof PatientRoute
+  '/verify-face': typeof VerifyFaceRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/doctor' | '/login' | '/logout' | '/patient'
+  fullPaths:
+    '/' | '/doctor' | '/login' | '/logout' | '/patient' | '/verify-face'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/doctor' | '/login' | '/logout' | '/patient'
-  id: '__root__' | '/' | '/doctor' | '/login' | '/logout' | '/patient'
+  to: '/' | '/doctor' | '/login' | '/logout' | '/patient' | '/verify-face'
+  id:
+    | '__root__'
+    | '/'
+    | '/doctor'
+    | '/login'
+    | '/logout'
+    | '/patient'
+    | '/verify-face'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -77,6 +94,7 @@ export interface RootRouteChildren {
   LoginRoute: typeof LoginRoute
   LogoutRoute: typeof LogoutRoute
   PatientRoute: typeof PatientRoute
+  VerifyFaceRoute: typeof VerifyFaceRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -116,6 +134,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof PatientRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/verify-face': {
+      id: '/verify-face'
+      path: '/verify-face'
+      fullPath: '/verify-face'
+      preLoaderRoute: typeof VerifyFaceRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
@@ -125,6 +150,7 @@ const rootRouteChildren: RootRouteChildren = {
   LoginRoute: LoginRoute,
   LogoutRoute: LogoutRoute,
   PatientRoute: PatientRoute,
+  VerifyFaceRoute: VerifyFaceRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

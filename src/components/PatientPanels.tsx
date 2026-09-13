@@ -1,6 +1,6 @@
 import { TissueAnimation, bloodFlowToState } from "@/components/TissueAnimation";
 import type { PatientRecord } from "@/lib/patients.server";
-import type { ViabilityAssessment } from "@/lib/clinical.functions";
+import type { ViabilityAssessment, PredictionHistoryRecord } from "@/lib/clinical.functions";
 
 export function PatientProfile({ patient }: { patient: PatientRecord }) {
   const rows: [string, string | number][] = [
@@ -43,6 +43,73 @@ export function PatientProfile({ patient }: { patient: PatientRecord }) {
   );
 }
 
+export function PredictionHistoryPanel({ history }: { history: PredictionHistoryRecord[] }) {
+  return (
+    <section className="panel">
+      <div className="section-heading">
+        <div>
+          <p className="eyebrow">Automated Scheduler</p>
+          <h2>Prediction History</h2>
+        </div>
+        <span className="record-pill">120-sec intervals</span>
+      </div>
+
+      {history.length === 0 ? (
+        <p className="muted" style={{ padding: "1rem" }}>
+          No prediction history available yet. The background scheduler will generate predictions
+          shortly.
+        </p>
+      ) : (
+        <div className="overflow-x-auto w-full mt-4 border border-slate-300 rounded-lg">
+          <table className="w-full text-sm text-left border-collapse">
+            <thead>
+              <tr className="border-b border-slate-300 bg-slate-100 text-slate-900">
+                <th className="py-3 px-4 font-bold text-xs uppercase tracking-wider text-slate-900">
+                  Timestamp (IST)
+                </th>
+                <th className="py-3 px-4 font-bold text-xs uppercase tracking-wider text-slate-900">
+                  Prediction
+                </th>
+                <th className="py-3 px-4 font-bold text-xs uppercase tracking-wider text-slate-900">
+                  Probability
+                </th>
+                <th className="py-3 px-4 font-bold text-xs uppercase tracking-wider text-slate-900">
+                  Confidence
+                </th>
+              </tr>
+            </thead>
+            <tbody className="divide-y divide-slate-300 bg-white">
+              {history.map((record, i) => {
+                const isViable = record.prediction === "Yes";
+                const date = new Date(record.createdAt);
+
+                return (
+                  <tr key={i} className="hover:bg-slate-50 transition-colors">
+                    <td className="py-3 px-4 text-slate-900 font-semibold">
+                      {date.toLocaleString("en-IN", { timeZone: "Asia/Kolkata" })}
+                    </td>
+                    <td className="py-3 px-4">
+                      <span
+                        className={`inline-flex items-center px-2.5 py-1 rounded-full text-xs font-extrabold ${isViable ? "bg-emerald-100 text-emerald-950 border border-emerald-400" : "bg-rose-100 text-rose-950 border border-rose-400"}`}
+                      >
+                        {isViable ? "Viable" : "Not Viable"}
+                      </span>
+                    </td>
+                    <td className="py-3 px-4 text-slate-900 font-bold">
+                      {record.viabilityProbability.toFixed(1)}%
+                    </td>
+                    <td className="py-3 px-4 text-slate-900 font-bold">{record.confidence}</td>
+                  </tr>
+                );
+              })}
+            </tbody>
+          </table>
+        </div>
+      )}
+    </section>
+  );
+}
+
 export function ResultAndMonitor({
   patient,
   assessment,
@@ -72,8 +139,7 @@ export function ResultAndMonitor({
           <small>%</small>
         </div>
         <p className="result-caption">
-          {viable ? "Stable tissue indicators" : "Tissue viability concern"} · viability
-          probability
+          {viable ? "Stable tissue indicators" : "Tissue viability concern"} · viability probability
         </p>
         <div className="result-details">
           <div>
@@ -94,8 +160,8 @@ export function ResultAndMonitor({
           </div>
         </div>
         <p className="disclaimer">
-          AI-assisted prediction from 15 clinical and physiological features (Risk_Level
-          excluded). Clinical decisions must be made by qualified medical professionals.
+          AI-assisted prediction from 15 clinical and physiological features (Risk_Level excluded).
+          Clinical decisions must be made by qualified medical professionals.
         </p>
       </article>
 
@@ -139,7 +205,9 @@ export function ResultAndMonitor({
             <b>{patient.Perfusion_Index}</b>
             <em
               style={
-                { "--level": `${Math.min(patient.Perfusion_Index * 10, 100)}%` } as React.CSSProperties
+                {
+                  "--level": `${Math.min(patient.Perfusion_Index * 10, 100)}%`,
+                } as React.CSSProperties
               }
             ></em>
           </div>

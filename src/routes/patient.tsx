@@ -3,8 +3,17 @@ import { useServerFn } from "@tanstack/react-start";
 import { useEffect, useState } from "react";
 
 import { Disclaimer } from "@/components/Disclaimer";
-import { PatientProfile, ResultAndMonitor } from "@/components/PatientPanels";
-import { getMyRecord, type ViabilityAssessment } from "@/lib/clinical.functions";
+import {
+  PatientProfile,
+  ResultAndMonitor,
+  PredictionHistoryPanel,
+} from "@/components/PatientPanels";
+import {
+  getMyRecord,
+  getPredictionHistory,
+  type ViabilityAssessment,
+  type PredictionHistoryRecord,
+} from "@/lib/clinical.functions";
 import type { PatientRecord } from "@/lib/patients.server";
 
 export const Route = createFileRoute("/patient")({
@@ -31,8 +40,10 @@ export const Route = createFileRoute("/patient")({
 function PatientDashboard() {
   const router = useRouter();
   const fetchRecord = useServerFn(getMyRecord);
+  const fetchHistory = useServerFn(getPredictionHistory);
   const [patient, setPatient] = useState<PatientRecord | null>(null);
   const [assessment, setAssessment] = useState<ViabilityAssessment | null>(null);
+  const [history, setHistory] = useState<PredictionHistoryRecord[]>([]);
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
@@ -50,8 +61,13 @@ function PatientDashboard() {
       }
       setPatient(result.patient);
       setAssessment(result.assessment);
+
+      const histResult = await fetchHistory({ data: { patientId: result.patient.Patient_ID } });
+      if (histResult.ok) {
+        setHistory(histResult.history);
+      }
     })();
-  }, [fetchRecord, router]);
+  }, [fetchRecord, fetchHistory, router]);
 
   return (
     <main className="workspace">
@@ -59,9 +75,7 @@ function PatientDashboard() {
         <div>
           <p className="eyebrow">Your clinical record</p>
           <h1>Tissue Viability Overview</h1>
-          <p className="subtitle">
-            You can only view your own information in this workspace.
-          </p>
+          <p className="subtitle">You can only view your own information in this workspace.</p>
         </div>
         <Link className="logout-link" to="/logout">
           Log out
@@ -76,7 +90,10 @@ function PatientDashboard() {
 
       {patient && <PatientProfile patient={patient} />}
       {patient && assessment && (
-        <ResultAndMonitor patient={patient} assessment={assessment} />
+        <>
+          <ResultAndMonitor patient={patient} assessment={assessment} />
+          <PredictionHistoryPanel history={history} />
+        </>
       )}
 
       <Disclaimer />
