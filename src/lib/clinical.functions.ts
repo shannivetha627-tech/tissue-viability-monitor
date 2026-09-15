@@ -298,5 +298,17 @@ export const getPredictionHistory = createServerFn({ method: "POST" })
       .where(eq(predictionHistory.patientId, data.patientId))
       .orderBy(desc(predictionHistory.createdAt));
 
-    return { ok: true as const, history };
+    const invalidHistory = history.filter(
+      (record) => Number.isNaN(record.createdAt.getTime()) || record.createdAt.getUTCFullYear() === 1970,
+    );
+    if (invalidHistory.length > 0) {
+      console.warn(
+        `[PredictionHistory] ${invalidHistory.length} invalid timestamp record(s) excluded from display for ${data.patientId}: ${invalidHistory.map((record) => record.id).join(", ")}`,
+      );
+    }
+
+    return {
+      ok: true as const,
+      history: history.filter((record) => !invalidHistory.includes(record)),
+    };
   });

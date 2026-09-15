@@ -51,7 +51,6 @@ export function PredictionHistoryPanel({ history }: { history: PredictionHistory
           <p className="eyebrow">Automated Scheduler</p>
           <h2>Prediction History</h2>
         </div>
-        <span className="record-pill">120-sec intervals</span>
       </div>
 
       {history.length === 0 ? (
@@ -82,11 +81,25 @@ export function PredictionHistoryPanel({ history }: { history: PredictionHistory
               {history.map((record, i) => {
                 const isViable = record.prediction === "Yes";
                 const date = new Date(record.createdAt);
+                const formattedDate = Number.isNaN(date.getTime()) || date.getFullYear() === 1970
+                  ? "Timestamp unavailable"
+                  : date
+                      .toLocaleString("en-IN", {
+                        timeZone: "Asia/Kolkata",
+                        day: "2-digit",
+                        month: "2-digit",
+                        year: "numeric",
+                        hour: "2-digit",
+                        minute: "2-digit",
+                        second: "2-digit",
+                        hour12: true,
+                      })
+                      .replace(/\b(am|pm)\b/i, (period) => period.toUpperCase());
 
                 return (
                   <tr key={i} className="hover:bg-slate-50 transition-colors">
                     <td className="py-3 px-4 text-slate-900 font-semibold">
-                      {date.toLocaleString("en-IN", { timeZone: "Asia/Kolkata" })}
+                      {formattedDate}
                     </td>
                     <td className="py-3 px-4">
                       <span
