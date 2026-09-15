@@ -17,13 +17,22 @@ export const Route = createFileRoute("/login")({
         content:
           "Sign in to the TissueGuard AI clinical workspace as a doctor or patient to review tissue viability assessments.",
       },
-      { property: "og:title", content: "Secure Login | TissueGuard AI" },
+      {
+        property: "og:title",
+        content: "Secure Login | TissueGuard AI",
+      },
       {
         property: "og:description",
         content: "Role-based access to the TissueGuard AI clinical workspace.",
       },
-      { property: "og:type", content: "website" },
-      { name: "twitter:card", content: "summary" },
+      {
+        property: "og:type",
+        content: "website",
+      },
+      {
+        name: "twitter:card",
+        content: "summary",
+      },
     ],
   }),
 });
@@ -43,7 +52,9 @@ function LoginPage() {
   useEffect(() => {
     document.body.classList.add("login-page");
 
-    return () => document.body.classList.remove("login-page");
+    return () => {
+      document.body.classList.remove("login-page");
+    };
   }, []);
 
   const onSubmit = async (event: React.FormEvent) => {
@@ -77,6 +88,13 @@ function LoginPage() {
 
       await router.invalidate();
 
+      /*
+       * Doctor accounts are returned as "pending_doctor"
+       * and must complete face verification before entering
+       * the doctor dashboard.
+       *
+       * Patient accounts go directly to the patient dashboard.
+       */
       if (result.role === "pending_doctor") {
         await router.navigate({
           to: "/verify-face",
@@ -168,7 +186,7 @@ function LoginPage() {
               aria-label={
                 showPassword ? "Hide password" : "Show password"
               }
-              onClick={() => setShowPassword((v) => !v)}
+              onClick={() => setShowPassword((value) => !value)}
             >
               {showPassword ? (
                 <EyeOff className="w-5 h-5" />
