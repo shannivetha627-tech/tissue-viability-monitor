@@ -68,7 +68,7 @@ function LoginPage() {
         await router.navigate({ to: "/patient" });
       }
     } catch {
-      setError("Sign-in failed. Please try again.");
+      setError("Use the credentials provided by your system administrator.");
     } finally {
       setBusy(false);
     }
@@ -142,10 +142,7 @@ function LoginPage() {
           </button>
         </form>
         <div className="login-hint">
-          <p>
-            <strong>Development Access:</strong> Development demo access is configured for this
-            environment. Enter your authorized credentials to continue.
-          </p>
+          <p>Use the credentials provided by your system administrator.</p>
           <p style={{ marginTop: "4px" }}>
             Patient accounts use the assigned Patient ID as the username.
           </p>

@@ -66,6 +66,8 @@ function mapToPatientRecord(p: typeof patients.$inferSelect): PatientRecord {
   };
 }
 
+const AUTH_CONFIG_ERROR = "Use the credentials provided by your system administrator.";
+
 export const login = createServerFn({ method: "POST" })
   .validator((data: unknown) =>
     z
@@ -78,6 +80,10 @@ export const login = createServerFn({ method: "POST" })
   )
   .handler(async ({ data }) => {
     try {
+      if (!process.env["DATABASE_URL"] || !process.env["SESSION_SECRET"]) {
+        return { ok: false as const, error: AUTH_CONFIG_ERROR };
+      }
+
       const session = await getAppSession();
       const username = data.username.trim();
 

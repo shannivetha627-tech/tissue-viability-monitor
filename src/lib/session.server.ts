@@ -10,8 +10,10 @@ export type AppSession = {
 export function getAppSession() {
   const password = process.env["SESSION_SECRET"];
 
-  if (!password) {
-    throw new Error("SESSION_SECRET environment variable is required.");
+  if (!password || password.length < 32) {
+    throw new Error(
+      "SESSION_SECRET environment variable is required and should be at least 32 characters.",
+    );
   }
 
   return useSession<AppSession>({
